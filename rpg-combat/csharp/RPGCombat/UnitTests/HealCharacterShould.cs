@@ -8,33 +8,41 @@ public class HealCharacterShould
     [Fact]
     public void RaiseHealthOfInjuredCharacter()
     {
-        var player = new Character();
-        var characterToHeal = new Character { Health = 10 };
+        var player = new Character { Health = 10 };
 
-        player.HealCharacter(characterToHeal, 10);
-        Assert.Equal(20, characterToHeal.Health);
+        player.HealCharacter(player, 10);
+        Assert.Equal(20, player.Health);
     }
 
     [Fact]
     public void NotHealDeadCharacter()
     {
-        var player = new Character();
-        var deadCharacter = new Character { Health = 0, IsAlive = false };
+        var player = new Character { Health = 0, IsAlive = false };
+
+        player.HealCharacter(player, 100);
         
-        player.HealCharacter(deadCharacter, 100);
-        
-        Assert.Equal(0, deadCharacter.Health);
-        Assert.False(deadCharacter.IsAlive);
+        Assert.Equal(0, player.Health);
+        Assert.False(player.IsAlive);
     }
 
     [Fact]
     public void NeverHealAboveInitialHealth()
     {
         var player = new Character();
-        var characterToHeal = new Character();
+
+        player.HealCharacter(player, 100);
+        
+        Assert.Equal(Character.INITIAL_HEALTH, player.Health);
+    }
+
+    [Fact]
+    public void DoNothingWhenTryingToHealOtherCharacter()
+    {
+        var player = new Character();
+        var characterToHeal = new Character { Health = 100 };
         
         player.HealCharacter(characterToHeal, 100);
         
-        Assert.Equal(Character.INITIAL_HEALTH, characterToHeal.Health);
+        Assert.Equal(100, characterToHeal.Health);
     }
 }

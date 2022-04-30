@@ -9,6 +9,15 @@ public class Character
 
     public void DealDamageTo(Character character, int damage)
     {
+        if (character == this)
+            return;
+
+        if (character.Level - Level >= 5)
+            damage /= 2;
+        
+        if (Level - character.Level >= 5)
+            damage *= 2;
+        
         character.Health = Math.Max(0, character.Health - damage);
         if (character.Health == 0)
         {
@@ -18,6 +27,9 @@ public class Character
 
     public void HealCharacter(Character characterToHeal, int amountToHeal)
     {
+        if (characterToHeal != this)
+            return;
+        
         if (characterToHeal.IsAlive)
         {
             characterToHeal.Health = Math.Min(INITIAL_HEALTH, characterToHeal.Health + amountToHeal);
